@@ -1,0 +1,48 @@
+# Contributor: Natanael Copa <ncopa@alpinelinux.org>
+# Maintainer: Firas Zaidan <firas@zaidan.de>
+_basename=libmemcached
+_forkname=aws-elasticache-cluster-client-$_basename
+pkgname=$_basename-aws
+pkgver=1.0.18
+pkgrel=2
+pkgdesc="Client library and command line tools for AWS ElasticCache memcached server"
+url="https://github.com/awslabs/aws-elasticache-cluster-client-libmemcached"
+arch="all"
+license="BSD/Apache-2.0"
+options="!check" # tests are broken
+depends=""
+depends_dev="cyrus-sasl-dev"
+makedepends="$depends_dev memcached-dev"
+provides="$_basename"
+install=""
+subpackages="$_basename-dev $_basename-doc $_basename-libs"
+source="${pkgname}-${pkgver}.tar.gz::https://github.com/awslabs/${_forkname}/archive/v${pkgver}.tar.gz
+	musl-fixes.patch"
+
+builddir="$srcdir/$_forkname-$pkgver"
+
+build() {
+	cd "$builddir"
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--disable-static \
+		--enable-sasl \
+		--enable-libmemcachedprotocol \
+		--enable-memaslap
+	make
+}
+
+check() {
+	cd "$builddir"
+	make check || { find . -name 'test-suite.log' -exec cat '{}' ';'; return 1; }
+}
+
+package() {
+	cd "$builddir"
+	make -j1 AM_MAKEFLAGS= DESTDIR="$pkgdir" install
+}
+
+sha512sums="8c9ea47b2168305e6ebdd2bd66cb01a67aa9b2f5e25fd1da860994ea7048e805df3337ec5cbf1b475fa4d88c51f6d4a5fb77bc7d4c10b524e87a72f0a5d0952a  libmemcached-aws-1.0.18.tar.gz
+ff8f59d2b6d3b7d1d110ff3f1d03dbceba3a000271e69f465ffd02e77c0a092e6904b19ac4aea624a0622cec6a16ecd048f46107e011cb9011027ef71265aaf5  musl-fixes.patch"
