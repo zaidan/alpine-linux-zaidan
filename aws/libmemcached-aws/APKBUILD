@@ -4,7 +4,7 @@ _basename=libmemcached
 _forkname=aws-elasticache-cluster-client-$_basename
 pkgname=$_basename-aws
 pkgver=1.0.18
-pkgrel=2
+pkgrel=3
 pkgdesc="Client library and command line tools for AWS ElasticCache memcached server"
 url="https://github.com/awslabs/aws-elasticache-cluster-client-libmemcached"
 arch="all"
@@ -15,7 +15,7 @@ depends_dev="cyrus-sasl-dev"
 makedepends="$depends_dev memcached-dev"
 provides="$_basename"
 install=""
-subpackages="$_basename-dev $_basename-doc $_basename-libs"
+subpackages="$pkgname-dev $pkgname-doc $pkgname-libs"
 source="${pkgname}-${pkgver}.tar.gz::https://github.com/awslabs/${_forkname}/archive/v${pkgver}.tar.gz
 	musl-fixes.patch"
 
