@@ -1,0 +1,42 @@
+# Contributor: Fabio Ribeiro <fabiorphp@gmail.com>
+# Maintainer: Firas Zaidan <firas@zaidan.de>
+
+pkgname=php7-memcached-aws
+_pkgreal=memcached
+_forkname=aws-elasticache-cluster-client-memcached-for-php
+pkgver=2.0.3
+pkgrel=1
+_phpver=${pkgname#php}
+_phpver=${_phpver%%-*}
+pkgdesc="PHP$_phpver extension for interfacing with memcached AWS ElasticCache Cluster via libmemcached-aws library"
+url="https://github.com/awslabs/aws-elasticache-cluster-client-memcached-for-php"
+arch="all"
+license="PHP/Apache-2.0"
+depends="php$_phpver-common php$_phpver-session"
+makedepends="php$_phpver-dev autoconf zlib-dev libmemcached-aws-dev cyrus-sasl-dev"
+source="$pkgname-$pkgver.tgz::https://github.com/awslabs/${_forkname}/archive/v${pkgver}.tar.gz"
+options="!check" # tests fail: not loaded session.so & need memcached sever
+builddir="$srcdir/$_forkname-$pkgver"
+
+build() {
+	cd "$builddir"
+
+	phpize$_phpver
+	./configure \
+		--prefix=/usr \
+		--with-php-config=php-config$_phpver \
+		--enable-memcached-sasl
+	make
+}
+
+package() {
+	local confdir="$pkgdir/etc/php$_phpver/conf.d"
+	cd "$builddir"
+
+	make INSTALL_ROOT="$pkgdir" install
+
+	mkdir -p "$confdir"
+	echo "extension=$_pkgreal.so" > "$confdir"/20_$_pkgreal.ini
+}
+
+sha512sums="14f541116db8c3d17cfa95a1227d1917ae5693dd157987f2a3cf1229dbcb6660f9481380d22754ec044778aa06f4483b7b987dbc1674446381d878dab3da9db1  php7-memcached-aws-2.0.3.tgz"
