@@ -1,13 +1,23 @@
 # Alpine Linux Repository
 
-This repository is experimental. Use it on your own risk!
+This repositories are experimental. Use them on your own risk!
 
-## Add repository
+## Add repositories
+
+### AWS
 
 Add `https://zaidan.github.io/alpine-linux-zaidan/aws` to your `/etc/apk/repositories`:
 
 ```bash
 # echo 'https://zaidan.github.io/alpine-linux-zaidan/aws' >> '/etc/apk/repositories'
+```
+
+### PHP
+
+Add `https://zaidan.github.io/alpine-linux-zaidan/php` to your `/etc/apk/repositories`:
+
+```bash
+# echo 'https://zaidan.github.io/alpine-linux-zaidan/php' >> '/etc/apk/repositories'
 ```
 
 ## Install public key
