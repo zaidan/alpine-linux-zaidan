@@ -5,7 +5,7 @@ pkgname=php5-memcached-aws
 _pkgreal=memcached
 _forkname=aws-elasticache-cluster-client-memcached-for-php
 pkgver=2.1.0
-pkgrel=1
+pkgrel=2
 _revision=95ed8a24d48ac0b4eb00334a46343256026878fd
 _phpver=${pkgname#php}
 _phpver=${_phpver%%-*}
@@ -13,7 +13,7 @@ pkgdesc="PHP$_phpver extension for interfacing with memcached AWS ElasticCache C
 url="https://github.com/awslabs/aws-elasticache-cluster-client-memcached-for-php"
 arch="all"
 license="PHP/Apache-2.0"
-depends="php$_phpver-common libmemcached-aws"
+depends="php$_phpver-common php$_phpver-igbinary libmemcached-aws"
 makedepends="php$_phpver-dev autoconf zlib-dev libmemcached-aws-dev cyrus-sasl-dev"
 source="$pkgname-$pkgver.zip::https://github.com/awslabs/${_forkname}/archive/${_revision}.zip"
 options="!check" # tests fail: not loaded session.so & need memcached server
@@ -26,7 +26,8 @@ build() {
 	./configure \
 		--prefix=/usr \
 		--with-php-config=php-config$_phpver \
-		--enable-memcached-sasl
+		--enable-memcached-sasl \
+    --enable-memcached-igbinary
 	make
 }
 
