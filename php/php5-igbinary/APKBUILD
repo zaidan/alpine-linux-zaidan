@@ -1,0 +1,44 @@
+# Maintainer: Firas Zaidan <firas@zaidan.de>
+pkgname=php5-igbinary
+_pkgreal=igbinary
+pkgver=2.0.5
+pkgrel=1
+_phpver=${pkgname#php}
+_phpver=${_phpver%%-*}
+pkgdesc="PHP$_phpver Igbinary extension: A drop in replacement for the standard php serializer"
+url="https://github.com/igbinary/igbinary"
+arch="all"
+license="BSD-3-Clause"
+pecldepends="php${_phpver}-dev autoconf"
+makedepends="$pecldepends zlib-dev"
+source="http://pecl.php.net/get/$_pkgreal-$pkgver.tgz"
+builddir="$srcdir/$_pkgreal-$pkgver"
+
+build() {
+	cd "$builddir"
+
+	phpize$_phpver
+	./configure \
+    CFLAGS="-O2 -g" \
+		--prefix=/usr \
+		--with-php-config=php-config$_phpver \
+		--enable-igbinary
+	make
+}
+
+check() {
+  cd "$builddir"
+	make test
+}
+
+package() {
+	local confdir="$pkgdir/etc/php$_phpver/conf.d"
+	cd "$builddir"
+
+	make INSTALL_ROOT="$pkgdir" install
+
+	mkdir -p "$confdir"
+	echo "extension=$_pkgreal.so" > "$confdir"/20_$_pkgreal.ini
+}
+
+sha512sums="7e65d250d8b877f204c0190e07dacedecb17032482abcf10e1dab2a0433b0982adbbee1218ee52aba976524948537afc7d69370f942e04de2220bf73bfc6fa9f  igbinary-2.0.5.tgz"
