@@ -2,7 +2,7 @@
 pkgname=php5-igbinary
 _pkgreal=igbinary
 pkgver=2.0.5
-pkgrel=1
+pkgrel=2
 _phpver=${pkgname#php}
 _phpver=${_phpver%%-*}
 pkgdesc="PHP$_phpver Igbinary extension: A drop in replacement for the standard php serializer"
@@ -28,7 +28,7 @@ build() {
 
 check() {
   cd "$builddir"
-	make test
+	NO_INTERACTION=1 make test
 }
 
 package() {
