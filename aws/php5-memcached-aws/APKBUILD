@@ -5,7 +5,7 @@ pkgname=php5-memcached-aws
 _pkgreal=memcached
 _forkname=aws-elasticache-cluster-client-memcached-for-php
 pkgver=2.1.0
-pkgrel=2
+pkgrel=3
 _revision=95ed8a24d48ac0b4eb00334a46343256026878fd
 _phpver=${pkgname#php}
 _phpver=${_phpver%%-*}
@@ -27,7 +27,8 @@ build() {
 		--prefix=/usr \
 		--with-php-config=php-config$_phpver \
 		--enable-memcached-sasl \
-    --enable-memcached-igbinary
+    --enable-memcached-igbinary \
+    --enable-memcached-json
 	make
 }
 
