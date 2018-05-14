@@ -1,0 +1,31 @@
+# Contributor: Fabio Ribeiro <fabiorphp@gmail.com>
+# Maintainer: Firas Zaidan <firas.zaidan@cerody.com>
+pkgname=php5-msgpack
+_pkgreal=msgpack
+pkgver=0.5.7
+pkgrel=1
+pkgdesc="This extension provide API for communicating with MessagePack serialization."
+url="http://pecl.php.net/package/$_pkgreal"
+arch="all"
+license="PHP"
+options="!check" # Tests fail - does not load msgpack.so
+depends=""
+makedepends="php5-dev autoconf"
+source="http://pecl.php.net/get/$_pkgreal-$pkgver.tgz"
+builddir="$srcdir"/$_pkgreal-$pkgver
+
+build() {
+	cd "$builddir"
+	phpize5
+	./configure --prefix=/usr --with-php-config=php-config5
+	make
+}
+
+package() {
+	cd "$builddir"
+	make INSTALL_ROOT="$pkgdir"/ install
+	install -d "$pkgdir"/etc/php5/conf.d
+	echo "extension=$_pkgreal.so" > "$pkgdir"/etc/php5/conf.d/50_$_pkgreal.ini
+}
+
+sha512sums="57b12d495146d8403f9f68bec223e5066c1cd303e201f70ad3386535eb581d69ede847cd5297ed15e160ba20b031fb0cec0a62739951c94808e33e9ca6129be4  msgpack-0.5.7.tgz"
