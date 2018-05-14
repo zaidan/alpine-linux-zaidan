@@ -3,14 +3,14 @@
 pkgname=php5-memcached
 _pkgreal=memcached
 pkgver=2.2.0
-pkgrel=1
+pkgrel=2
 _phpver=${pkgname#php}
 _phpver=${_phpver%%-*}
 pkgdesc="PHP$_phpver extension for interfacing with memcached via libmemcached library"
 url="http://pecl.php.net/package/memcached"
 arch="all"
 license="PHP"
-depends="php$_phpver-common"
+depends="php$_phpver-common php$_phpver-igbinary"
 makedepends="php$_phpver-dev autoconf zlib-dev libmemcached-dev cyrus-sasl-dev"
 source="$pkgname-$pkgver.tgz::http://pecl.php.net/get/$_pkgreal-$pkgver.tgz"
 options="!check" # tests fail: not loaded session.so & need memcached sever
@@ -23,7 +23,8 @@ build() {
 	./configure \
 		--prefix=/usr \
 		--with-php-config=php-config$_phpver \
-		--disable-memcached-sasl
+		--disable-memcached-sasl \
+    --enable-memcached-igbinary
 	make
 }
 
