@@ -3,7 +3,7 @@
 pkgname=php5-memcached
 _pkgreal=memcached
 pkgver=2.2.0
-pkgrel=2
+pkgrel=3
 _phpver=${pkgname#php}
 _phpver=${_phpver%%-*}
 pkgdesc="PHP$_phpver extension for interfacing with memcached via libmemcached library"
@@ -24,7 +24,8 @@ build() {
 		--prefix=/usr \
 		--with-php-config=php-config$_phpver \
 		--disable-memcached-sasl \
-    --enable-memcached-igbinary
+    --enable-memcached-igbinary \
+    --enable-memcached-json
 	make
 }
 
